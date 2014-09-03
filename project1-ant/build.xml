@@ -1,0 +1,65 @@
+<project name="Hello_Project" default="deploy">
+<!--  ==== load properties from a properties file ====  -->
+<property file="build.properties"/>
+<!--  ==== path used for classpath ====  -->
+<path id="compile.classpath">
+<pathelement location="${tomcat.home}/lib/servlet-api.jar"/>
+</path>
+<!--
+ ==== create directories for development environment and deployment environment ==== 
+-->
+<target name="init">
+<mkdir dir="etc"/>
+<mkdir dir="classes"/>
+<mkdir dir="src"/>
+<mkdir dir="web"/>
+<mkdir dir="${tomcat.home}/webapps/${application}"/>
+<mkdir dir="${tomcat.home}/webapps/${application}/WEB-INF"/>
+<mkdir dir="${tomcat.home}/webapps/${application}/WEB-INF/classes"/>
+</target>
+<!--  ==== compile the java source ====  -->
+<target name="compile" depends="init">
+<javac includeantruntime="false" srcdir="src" destdir="classes">
+<classpath refid="compile.classpath"/>
+</javac>
+</target>
+<!--  ==== deploy the files to Tomcat ====  -->
+<target name="deploy" depends="compile">
+<copy todir="${tomcat.home}/webapps/${application}/">
+<fileset dir="web">
+<include name="**/*.*"/>
+</fileset>
+</copy>
+<copy file="etc/web.xml" todir="${tomcat.home}/webapps/${application}/WEB-INF"/>
+<copy todir="${tomcat.home}/webapps/${application}/WEB-INF/classes">
+<fileset dir="classes">
+<include name="**/*.*"/>
+</fileset>
+</copy>
+</target>
+<!--  ==== clean (for clean build) ====  -->
+<target name="clean">
+<delete dir="classes"/>
+<delete dir="${tomcat.home}/webapps/${application}"/>
+</target>
+<!--  ==== start tomcat ====  -->
+<target name="tomcat-start">
+<java classname="org.apache.catalina.startup.Bootstrap" failonerror="true" fork="true">
+<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar"/>
+<jvmarg value="-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager"/>
+<jvmarg value="-Djava.util.logging.config.file=${tomcat.home}/conf/logging.properties"/>
+<jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+<jvmarg value="-Dcatalina.base=${tomcat.home}"/>
+<jvmarg value="-Djava.io.tmpdir=${tomcat.home}/temp"/>
+<arg line="start"/>
+</java>
+</target>
+<!--  ==== stop tomcat ====  -->
+<target name="tomcat-stop">
+<java classname="org.apache.catalina.startup.Bootstrap" fork="true">
+<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar"/>
+<jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+<arg line="stop"/>
+</java>
+</target>
+</project>
