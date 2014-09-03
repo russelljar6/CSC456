@@ -32,7 +32,7 @@ configurations {
 dependencies {
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
     compile("org.springframework.boot:spring-boot-starter-web:1.1.1.RELEASE")
-    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat:1.1.5.RELEASE")
     testCompile group: 'junit', name: 'junit', version: '4.+'
 }
 
@@ -46,4 +46,11 @@ uploadArchives {
            dirs 'repos'
        }
     }
+	
+	task hello {
+    doLast {
+        def today = new Date()
+		println today
+    }
+}
 }

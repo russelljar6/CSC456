@@ -1,0 +1,90 @@
+Jared Russell
+
+Ant
+Examine the build.xml file. 
+1) How many targets are there? 
+
+Six
+
+
+2) What are they? 
+
+Init, compile, deploy, clean, tomcat-start, tomcat-stop
+
+
+3) Explain the dependencies among these targets. 
+
+Deploy depends on compile, which depends on init.  This means for target to run, it must first initiate any command it is dependent on.  So, a deploy command runs init and compile in that order.
+
+
+4) Actually you can just type ant deploy without doing ant compile first. To try that, let us do a clean build by typing ant clean and then enter ant deploy. Why can we deploy the application to tomcat using ant deploy without even doing ant compile first?
+
+You can do this because deploy depends on compile which depends on init.  This mean init and compile will both run prior to deploy running.
+
+
+5) Why you can deploy an application by entering ant  without typing ant deploy?
+
+Because deploy is the default ant command.  Just entering the command "ant" actually runs "ant deploy".
+
+
+6) Change your ant build file, so that in one step, i.e., type one command at the command line, you can compile your source code, deploy your files to tomcat, and then start Tomcat. What changes did you have to make?
+
+You could add the depends="deploy" to the tomcat-start target.
+
+
+Maven
+Example the pom.xml file.
+7) We set the package level to war. What is the default level? What are the other options?
+
+The default is a jar file.  Other options are war, ear, and pom.
+
+
+8) If we wanted to include the lastest version of a library called spring-core, how would we go about that? Hint: Search http://mvnrepository.com/
+
+You would add the following dependency into your packaging file:
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-core</artifactId>
+	<version>4.0.6.RELEASE</version>
+</dependency>
+
+
+
+9) What does the group id mean/refer? What about the artifact id?
+
+Group ID is the value that will help identify a project across all other projects.
+Artifact ID is the name of the jar without the version.
+
+
+10) How could we setup maven to deploy the app as well?
+
+
+
+
+Gradle
+Examine the build.gradle file.
+11) If we wanted to include the lastest version of a library called spring-core, how would we go about that?
+
+Update the classpath and the dependecies in the build.gradle file and add any plug-ins if needed.
+
+
+12) Do you feel gradle is closer to ant or maven in terms of its functionality and implementation or do you think it is like comparing apples to oranges?
+
+I think it is closer to Maven. The setup was very similar and the overall implementation seems closer. 
+
+
+Ant/Maven/Gradle Comparison
+13) Which language(s) do you use to build your script for each tool?
+
+Ant= xml	Maven=	xml	Gradle= gradle
+
+
+14) Which one do you like best? Why? (There is no right or wrong answer. The only wrong answer is one without details explaining why.)
+
+It's hard to say with only the limited amount of use I've had with each.  I like Maven and Gradle better than Java since they both rely
+on dependencies instead of an xml file.  Of those two, I like Gradle a little more with its ability to add new tasks through Groovy.
+From what I can tell, Gradle was quick and has a lot of customization options.  
+
+
+15) Google uses gradle as android's build system, US Bank uses ant, and American Modern uses maven. Research and see if you can find different tools or companies that use ant, maven, or gradle.
+
